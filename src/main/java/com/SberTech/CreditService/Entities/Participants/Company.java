@@ -1,20 +1,14 @@
 package com.SberTech.CreditService.Entities.Participants;
 
-import com.SberTech.CreditService.Models.GenderType;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
-public class Company {
+public class Company extends Participant {
 
-    private String name;
-
-    @Enumerated(EnumType.ORDINAL)
-    private GenderType gender;
-
+    private String companyName;
     private long ogrn;
-
     @Column(name = "registration_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date registrationDate;
@@ -25,21 +19,8 @@ public class Company {
     public Company() {
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public GenderType getGender() {
-        return gender;
-    }
-
-    public void setGender(GenderType gender) {
-        this.gender = gender;
-    }
+    public String getCompanyName() { return companyName; }
+    public void setCompanyName(String companyName) { this.companyName = companyName; }
 
     public long getOgrn() {
         return ogrn;

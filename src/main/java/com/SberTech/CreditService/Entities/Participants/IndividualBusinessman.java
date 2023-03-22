@@ -1,7 +1,9 @@
 package com.SberTech.CreditService.Entities.Participants;
 
-import com.SberTech.CreditService.Models.GenderType;
+import com.SberTech.CreditService.Models.Enums.GenderType;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -16,6 +18,7 @@ public class IndividualBusinessman extends Participant {
     private int passportSerial;
     private int passportNumber;
 
+    @JsonProperty(required = true)
     private long ogrn;
 
     @Column(name = "registration_date")

@@ -1,29 +1,10 @@
-package com.SberTech.CreditService.Entities.Pledges;
+package com.SberTech.CreditService.Models.Pledges;
 
-import com.SberTech.CreditService.Models.Pledges.BasePledgeModel;
-import com.SberTech.CreditService.Models.Pledges.FlatPledgeModel;
-import jakarta.persistence.Entity;
-
-@Entity
-public class FlatPledge extends BasePledge {
-
+public class FlatPledgeModel extends BasePledgeModel {
     private String address;
     private double totalArea;
     private int floor;
     private String cadastralNumber;
-
-    @Override
-    public BasePledgeModel convertToDto() {
-        FlatPledgeModel model = new FlatPledgeModel();
-        model.setId(this.id);
-        model.setName(this.name);
-        model.setAmount(this.amount);
-        model.setAddress(this.address);
-        model.setFloor(this.floor);
-        model.setCadastralNumber(this.cadastralNumber);
-        model.setTotalArea(this.totalArea);
-        return model;
-    }
 
     public String getAddress() {
         return address;
@@ -55,9 +36,5 @@ public class FlatPledge extends BasePledge {
 
     public void setCadastralNumber(String cadastralNumber) {
         this.cadastralNumber = cadastralNumber;
-    }
-
-
-    public FlatPledge() {
     }
 }

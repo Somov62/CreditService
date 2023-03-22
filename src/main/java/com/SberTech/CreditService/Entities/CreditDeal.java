@@ -1,7 +1,8 @@
 package com.SberTech.CreditService.Entities;
 
+import com.SberTech.CreditService.Entities.Participants.Participant;
 import com.SberTech.CreditService.Entities.Pledges.BasePledge;
-import com.SberTech.CreditService.Models.CreditConditionType;
+import com.SberTech.CreditService.Models.Enums.CreditConditionType;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -11,6 +12,8 @@ import java.util.List;
 @Entity
 @Table (name = "credit_deal")
 public class CreditDeal {
+
+    public CreditDeal() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +35,15 @@ public class CreditDeal {
 
     @Column(name = "interest_rate")
     private double interestRate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dealId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal")
     private List<BasePledge> pledges;
+    @ManyToMany
+    @JoinTable (
+            name = "deal_participant",
+            joinColumns = @JoinColumn(name = "deal_id"),
+            inverseJoinColumns = @JoinColumn(name = "participant_id")
+    )
+    private List<Participant> participants;
 
     public List<BasePledge> getPledges() {
         return pledges;
@@ -43,17 +53,12 @@ public class CreditDeal {
         this.pledges = pledges;
     }
 
-    public List<BasePledge> getParticipants() {
+    public List<Participant> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<BasePledge> participants) {
+    public void setParticipants(List<Participant> participants) {
         this.participants = participants;
-    }
-
-    @ManyToMany(mappedBy = "deals")
-    private List<BasePledge> participants;
-    public CreditDeal() {
     }
 
     public long getId() {

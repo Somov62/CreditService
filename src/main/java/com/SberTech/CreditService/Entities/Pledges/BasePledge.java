@@ -1,5 +1,7 @@
 package com.SberTech.CreditService.Entities.Pledges;
 
+import com.SberTech.CreditService.Entities.CreditDeal;
+import com.SberTech.CreditService.Models.Pledges.BasePledgeModel;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -7,28 +9,37 @@ import java.math.BigDecimal;
 @Inheritance(strategy = InheritanceType.JOINED)
 
 public class BasePledge {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    protected long id;
 
     @ManyToOne
-    @JoinColumn(name ="deal_id")
-    private long dealId;
+    @JoinColumn(name = "deal_id")
+    protected CreditDeal deal;
 
-    private String name;
+    protected String name;
 
     @Column(name = "amount")
-    private BigDecimal amount;
+    protected BigDecimal amount;
+
+    public BasePledgeModel convertToDto() {
+        BasePledgeModel model = new BasePledgeModel();
+        model.setId(this.id);
+        model.setName(this.name);
+        model.setAmount(this.amount);
+        return model;
+    }
 
     public BasePledge() {
     }
 
-    public long getDealId() {
-        return dealId;
+    public CreditDeal getDeal() {
+        return deal;
     }
 
-    public void setDealId(long dealId) {
-        this.dealId = dealId;
+    public void setDealId(CreditDeal deal) {
+        this.deal = deal;
     }
 
     public long getId() {

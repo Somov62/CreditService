@@ -1,6 +1,6 @@
 package com.SberTech.CreditService.Entities.Participants;
 
-import com.SberTech.CreditService.Models.GenderType;
+import com.SberTech.CreditService.Models.Enums.GenderType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

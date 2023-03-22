@@ -1,11 +1,8 @@
-package com.SberTech.CreditService.Entities.Pledges;
+package com.SberTech.CreditService.Models.Pledges;
 
-import com.SberTech.CreditService.Models.Pledges.BasePledgeModel;
-import com.SberTech.CreditService.Models.Pledges.CarPledgeModel;
-import jakarta.persistence.Entity;
-
-@Entity
-public class CarPledge extends BasePledge {
+public class CarPledgeModel extends  BasePledgeModel {
+    public CarPledgeModel() {
+    }
 
     private String brand;
     private String model;
@@ -14,22 +11,6 @@ public class CarPledge extends BasePledge {
     private double power;
     private int releaseYear;
 
-    public CarPledge() {
-    }
-
-    @Override
-    public BasePledgeModel convertToDto() {
-        CarPledgeModel model = new CarPledgeModel();
-        model.setId(this.id);
-        model.setName(this.name);
-        model.setAmount(this.amount);
-        model.setBrand(this.brand);
-        model.setModel(this.model);
-        model.setVin(this.vin);
-        model.setPower(this.power);
-        model.setReleaseYear(this.releaseYear);
-        return model;
-    }
     public String getBrand() {
         return brand;
     }

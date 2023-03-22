@@ -1,36 +1,23 @@
-package com.SberTech.CreditService.Entities.Participants;
+package com.SberTech.CreditService.Models.Participants;
 
-import com.SberTech.CreditService.Entities.CreditDeal;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.List;
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = NaturalPersonModel.class)
+@JsonSubTypes({
+        @JsonSubTypes.Type(NaturalPersonModel.class),
+        @JsonSubTypes.Type(IndividualBusinessmanModel.class),
+        @JsonSubTypes.Type(CompanyModel.class)})
+public abstract class BaseParticipantModel {
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+    protected long id;
+    protected String name;
+    protected long inn;
+    protected boolean isBorrower;
+    protected boolean isGuarantor;
+    protected boolean isPledger;
 
-public class Participant {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
-    private long inn;
-    private boolean isBorrower;
-    private boolean isGuarantor;
-    private boolean isPledger;
-
-    @ManyToMany(mappedBy = "participants")
-    private List<CreditDeal> deals;
-
-    public Participant() {
-    }
-
-    public List<CreditDeal> getDeals() {
-        return deals;
-    }
-
-    public void setDeals(List<CreditDeal> deals) {
-        this.deals = deals;
-    }
+    //getters and setters area
 
     public long getId() {
         return id;
