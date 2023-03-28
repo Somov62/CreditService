@@ -10,14 +10,14 @@ import com.SberTech.CreditService.Entities.Pledges.CarPledge;
 import com.SberTech.CreditService.Entities.Pledges.FlatPledge;
 import com.SberTech.CreditService.Entities.Pledges.LandPledge;
 import com.SberTech.CreditService.Exceptions.NotFoundException;
-import com.SberTech.CreditService.Models.CreditDealModel;
-import com.SberTech.CreditService.Models.Participants.CompanyModel;
-import com.SberTech.CreditService.Models.Participants.IndividualBusinessmanModel;
-import com.SberTech.CreditService.Models.Participants.NaturalPersonModel;
-import com.SberTech.CreditService.Models.Pledges.BasePledgeModel;
-import com.SberTech.CreditService.Models.Pledges.CarPledgeModel;
-import com.SberTech.CreditService.Models.Pledges.FlatPledgeModel;
-import com.SberTech.CreditService.Models.Pledges.LandPledgeModel;
+import com.SberTech.CreditService.Mappers.CreditDealMapper;
+import com.SberTech.CreditService.Models.CreditDealDto;
+import com.SberTech.CreditService.Models.Participants.CompanyDto;
+import com.SberTech.CreditService.Models.Participants.IndividualBusinessmanDto;
+import com.SberTech.CreditService.Models.Participants.NaturalPersonDto;
+import com.SberTech.CreditService.Models.Pledges.CarPledgeDto;
+import com.SberTech.CreditService.Models.Pledges.FlatPledgeDto;
+import com.SberTech.CreditService.Models.Pledges.LandPledgeDto;
 import com.SberTech.CreditService.Repos.CreditDealRepo;
 import com.SberTech.CreditService.Repos.Participants.ParticipantRepo;
 import com.SberTech.CreditService.Repos.Pledges.BasePledgeRepo;
@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CreditDealService {
@@ -36,50 +37,39 @@ public class CreditDealService {
     private ParticipantRepo<Participant> participantRepo;
     @Autowired
     private BasePledgeRepo<BasePledge> pledgeRepo;
+    @Autowired
+    private CreditDealMapper creditDealMapper;
 
-    public List<CreditDealModel> getAll() {
-        return repo.findAll().stream().map(CreditDealModel::new).toList();
+    public List<CreditDealDto> getAll() {
+
+        return repo.findAll().stream().map(creditDealMapper::mapToDto).toList();
     }
 
-    public CreditDealModel getById(long id) throws NotFoundException {
+    public CreditDealDto getById(long id) throws NotFoundException {
         var deal = repo.findById(id);
         if (deal.isEmpty())
             throw new NotFoundException("Кредитная сделка не найдена");
-        return new CreditDealModel(deal.get());
+        return creditDealMapper.mapToDto(deal.get());
     }
 
-    public CreditDealModel add(CreditDealModel model) {
+    public CreditDealDto add(CreditDealDto model) {
         
-        CreditDeal entity = new CreditDeal();
-        entity.setPeriod(model.getPeriod());
-        entity.setAmount(model.getAmount());
-        entity.setCreditCondition(model.getCreditCondition());
-        entity.setCreationDate(model.getCreationDate());
-        entity.setInterestRate(model.getInterestRate());
-        entity.setParticipants(this.setParticipants(model));
-        entity.setPledges(this.setPledges(model));
-
+        CreditDeal entity = creditDealMapper.mapToEntity(model);
         entity = repo.save(entity);
-        return new CreditDealModel(entity);
+        return creditDealMapper.mapToDto(entity);
 
     }
 
-    public CreditDealModel edit(CreditDealModel model) throws NotFoundException {
+    public CreditDealDto edit(CreditDealDto model) throws NotFoundException {
         var find = repo.findById(model.getId());
         if (find.isEmpty())
             throw new NotFoundException("Сделка не найдена");
         CreditDeal entity = find.get();
 
-        entity.setPeriod(model.getPeriod());
-        entity.setAmount(model.getAmount());
-        entity.setCreditCondition(model.getCreditCondition());
-        entity.setCreationDate(model.getCreationDate());
-        entity.setInterestRate(model.getInterestRate());
-        entity.setParticipants(this.setParticipants(model));
-        entity.setPledges(this.setPledges(model));
+        entity = creditDealMapper.updateEntity(entity, model);
 
         entity = repo.save(entity);
-        return new CreditDealModel(entity);
+        return creditDealMapper.mapToDto(entity);
     }
 
     public long delete(long id) throws NotFoundException {
@@ -91,7 +81,7 @@ public class CreditDealService {
         return id;
     }
 
-    public List<Participant> setParticipants(CreditDealModel model) {
+    public List<Participant> setParticipants(CreditDealDto model) {
 
         List<Participant> participants = new ArrayList<>();
         if (model.getParticipants() == null)
@@ -100,11 +90,11 @@ public class CreditDealService {
         for (var item : model.getParticipants()) {
             var participant = participantRepo.findById(item.getId());
             if (participant.isPresent()) {
-                participants.add((Participant)participant.get());
+                participants.add(participant.get());
                 continue;
             }
 
-            if (item instanceof CompanyModel dto)
+            if (item instanceof CompanyDto dto)
             {
                 Company company = new Company();
                 company.setOgrn(dto.getOgrn());
@@ -122,7 +112,7 @@ public class CreditDealService {
                 continue;
             }
 
-            if (item instanceof IndividualBusinessmanModel dto)
+            if (item instanceof IndividualBusinessmanDto dto)
             {
                 IndividualBusinessman indBus = new IndividualBusinessman();
                 indBus.setOgrn(dto.getOgrn());
@@ -145,7 +135,7 @@ public class CreditDealService {
                 continue;
             }
 
-            if (item instanceof NaturalPersonModel dto)
+            if (item instanceof NaturalPersonDto dto)
             {
                 NaturalPerson natPers = new NaturalPerson();
                 natPers.setMiddleName(dto.getMiddleName());
@@ -178,7 +168,7 @@ public class CreditDealService {
         return participants;
     }
 
-    public List<BasePledge> setPledges(CreditDealModel model) {
+    public List<BasePledge> setPledges(CreditDealDto model) {
         List<BasePledge> pledges = new ArrayList<>();
         if (model.getPledges() == null)
             return pledges;
@@ -190,7 +180,7 @@ public class CreditDealService {
                 continue;
             }
 
-            if (item instanceof CarPledgeModel dto) {
+            if (item instanceof CarPledgeDto dto) {
                 CarPledge car = new CarPledge();
                 car.setBrand(dto.getBrand());
                 car.setModel(dto.getModel());
@@ -203,7 +193,7 @@ public class CreditDealService {
                 pledges.add(car);
             }
 
-            if (item instanceof LandPledgeModel dto) {
+            if (item instanceof LandPledgeDto dto) {
                 LandPledge land = new LandPledge();
                 land.setAddress(dto.getAddress());
                 land.setCadastralNumber(dto.getCadastralNumber());
@@ -214,7 +204,7 @@ public class CreditDealService {
                 pledges.add(land);
             }
 
-            if (item instanceof FlatPledgeModel dto) {
+            if (item instanceof FlatPledgeDto dto) {
                 FlatPledge flat = new FlatPledge();
                 flat.setAddress(dto.getAddress());
                 flat.setCadastralNumber(dto.getCadastralNumber());

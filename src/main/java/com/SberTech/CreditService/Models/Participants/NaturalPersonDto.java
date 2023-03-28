@@ -1,30 +1,8 @@
 package com.SberTech.CreditService.Models.Participants;
 
-import com.SberTech.CreditService.Entities.Participants.NaturalPerson;
 import com.SberTech.CreditService.Models.Enums.GenderType;
 
-public class NaturalPersonModel extends BaseParticipantModel {
-
-    public NaturalPersonModel() {
-    }
-
-    public NaturalPersonModel(NaturalPerson entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.inn = entity.getInn();
-        this.isBorrower = entity.isBorrower();
-        this.isGuarantor = entity.isGuarantor();
-        this.isPledger = entity.isPledger();
-        this.firstName = entity.getFirstName();
-        this.lastName = entity.getLastName();
-        this.middleName = entity.getMiddleName();
-        this.gender = entity.getGender();
-        this.passportSerial = entity.getPassportSerial();
-        this.passportNumber = entity.getPassportNumber();
-        this.registration_address = entity.getRegistration_address();
-        this.residential_address = entity.getResidential_address();
-    }
-
+public class NaturalPersonDto extends ParticipantDto {
     private String firstName;
     private String lastName;
     private String middleName;
@@ -33,6 +11,9 @@ public class NaturalPersonModel extends BaseParticipantModel {
     private int passportNumber;
     private String registration_address;
     private String residential_address;
+
+    public NaturalPersonDto() {
+    }
 
     //getters and setters area
 

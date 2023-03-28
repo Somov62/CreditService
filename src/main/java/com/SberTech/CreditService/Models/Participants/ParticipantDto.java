@@ -3,12 +3,12 @@ package com.SberTech.CreditService.Models.Participants;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = NaturalPersonModel.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = NaturalPersonDto.class)
 @JsonSubTypes({
-        @JsonSubTypes.Type(NaturalPersonModel.class),
-        @JsonSubTypes.Type(IndividualBusinessmanModel.class),
-        @JsonSubTypes.Type(CompanyModel.class)})
-public abstract class BaseParticipantModel {
+        @JsonSubTypes.Type(NaturalPersonDto.class),
+        @JsonSubTypes.Type(IndividualBusinessmanDto.class),
+        @JsonSubTypes.Type(CompanyDto.class)})
+public class ParticipantDto {
 
     protected long id;
     protected String name;

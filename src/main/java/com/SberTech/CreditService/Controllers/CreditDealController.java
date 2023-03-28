@@ -1,8 +1,7 @@
 package com.SberTech.CreditService.Controllers;
 
-import com.SberTech.CreditService.Entities.CreditDeal;
 import com.SberTech.CreditService.Exceptions.NotFoundException;
-import com.SberTech.CreditService.Models.CreditDealModel;
+import com.SberTech.CreditService.Models.CreditDealDto;
 import com.SberTech.CreditService.Services.CreditDealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ public class CreditDealController {
     private CreditDealService service;
 
     @GetMapping
-    public ResponseEntity<List<CreditDealModel>> get() {
+    public ResponseEntity<List<CreditDealDto>> get() {
         return ResponseEntity.ok(service.getAll());
     }
 
@@ -44,13 +43,13 @@ public class CreditDealController {
     }
 
     @PostMapping
-    public ResponseEntity post(@RequestBody CreditDealModel body) {
+    public ResponseEntity post(@RequestBody CreditDealDto body) {
         var entity = service.add(body);
         return ResponseEntity.ok(entity);
     }
 
     @PutMapping
-    public ResponseEntity put(@RequestBody CreditDealModel body) {
+    public ResponseEntity put(@RequestBody CreditDealDto body) {
         try {
             var entity = service.edit(body);
             return ResponseEntity.ok(entity);

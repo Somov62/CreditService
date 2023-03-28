@@ -4,12 +4,14 @@ import com.SberTech.CreditService.Entities.Participants.Participant;
 import com.SberTech.CreditService.Entities.Pledges.BasePledge;
 import com.SberTech.CreditService.Models.Enums.CreditConditionType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@DynamicUpdate
 @Table (name = "credit_deal")
 public class CreditDeal {
 
@@ -45,6 +47,15 @@ public class CreditDeal {
     )
     private List<Participant> participants;
 
+    @Version
+    private long version;
+
+    public long getVersion() {
+        return version;
+    }
+    public void setVersion(long version) {
+        this.version = version;
+    }
     public List<BasePledge> getPledges() {
         return pledges;
     }

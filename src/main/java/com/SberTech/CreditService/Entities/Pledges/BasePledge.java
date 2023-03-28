@@ -1,7 +1,6 @@
 package com.SberTech.CreditService.Entities.Pledges;
 
 import com.SberTech.CreditService.Entities.CreditDeal;
-import com.SberTech.CreditService.Models.Pledges.BasePledgeModel;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -22,14 +21,6 @@ public class BasePledge {
 
     @Column(name = "amount")
     protected BigDecimal amount;
-
-    public BasePledgeModel convertToDto() {
-        BasePledgeModel model = new BasePledgeModel();
-        model.setId(this.id);
-        model.setName(this.name);
-        model.setAmount(this.amount);
-        return model;
-    }
 
     public BasePledge() {
     }

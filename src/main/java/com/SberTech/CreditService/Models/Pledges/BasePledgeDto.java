@@ -5,19 +5,21 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.math.BigDecimal;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = LandPledgeModel.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = LandPledgeDto.class)
 @JsonSubTypes({
-        @JsonSubTypes.Type(LandPledgeModel.class),
-        @JsonSubTypes.Type(CarPledgeModel.class),
-        @JsonSubTypes.Type(FlatPledgeModel.class)})
-public class BasePledgeModel {
+        @JsonSubTypes.Type(LandPledgeDto.class),
+        @JsonSubTypes.Type(CarPledgeDto.class),
+        @JsonSubTypes.Type(FlatPledgeDto.class)})
+public class BasePledgeDto {
 
-    public BasePledgeModel() {
+    public BasePledgeDto() {
     }
     private long id;
     private String name;
 
     private BigDecimal amount;
+
+    //getters and setters area
 
     public long getId() {
         return id;

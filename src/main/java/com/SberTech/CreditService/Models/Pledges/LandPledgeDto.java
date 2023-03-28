@@ -1,11 +1,14 @@
 package com.SberTech.CreditService.Models.Pledges;
 
-public class FlatPledgeModel extends BasePledgeModel {
+public class LandPledgeDto extends BasePledgeDto {
     private String address;
     private double totalArea;
-    private int floor;
     private String cadastralNumber;
 
+    public LandPledgeDto() {
+    }
+
+    //getters and setters area
     public String getAddress() {
         return address;
     }
@@ -20,14 +23,6 @@ public class FlatPledgeModel extends BasePledgeModel {
 
     public void setTotalArea(double totalArea) {
         this.totalArea = totalArea;
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-
-    public void setFloor(int floor) {
-        this.floor = floor;
     }
 
     public String getCadastralNumber() {

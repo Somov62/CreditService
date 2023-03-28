@@ -1,41 +1,12 @@
 package com.SberTech.CreditService.Models.Participants;
 
-import com.SberTech.CreditService.Entities.Participants.IndividualBusinessman;
 import com.SberTech.CreditService.Models.Enums.GenderType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-public class IndividualBusinessmanModel extends BaseParticipantModel {
-
-    public IndividualBusinessmanModel() {
-    }
-
-    @JsonCreator
-    public IndividualBusinessmanModel(@JsonProperty(value = "ogrn", required = true) long x) {
-        this.ogrn = x;
-    }
-
-    public IndividualBusinessmanModel(IndividualBusinessman entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.inn = entity.getInn();
-        this.isBorrower = entity.isBorrower();
-        this.isGuarantor = entity.isGuarantor();
-        this.isPledger = entity.isPledger();
-        this.firstName = entity.getFirstName();
-        this.lastName = entity.getLastName();
-        this.middleName = entity.getMiddleName();
-        this.gender = entity.getGender();
-        this.passportSerial = entity.getPassportSerial();
-        this.passportNumber = entity.getPassportNumber();
-        this.ogrn = entity.getOgrn();
-        this.registration_address = entity.getRegistration_address();
-        this.registrationDate = entity.getRegistrationDate();
-        this.residential_address = entity.getResidential_address();
-    }
-
+public class IndividualBusinessmanDto extends ParticipantDto {
     private String firstName;
     private String lastName;
     private String middleName;
@@ -46,6 +17,14 @@ public class IndividualBusinessmanModel extends BaseParticipantModel {
     private Date registrationDate;
     private String registration_address;
     private String residential_address;
+
+    public IndividualBusinessmanDto() {
+    }
+
+    @JsonCreator
+    public IndividualBusinessmanDto(@JsonProperty(value = "ogrn", required = true) long x) {
+        this.ogrn = x;
+    }
 
     //getters and setters area
 

@@ -1,9 +1,6 @@
 package com.SberTech.CreditService.Models.Pledges;
 
-public class CarPledgeModel extends  BasePledgeModel {
-    public CarPledgeModel() {
-    }
-
+public class CarPledgeDto extends BasePledgeDto {
     private String brand;
     private String model;
     private String vin;
@@ -11,6 +8,10 @@ public class CarPledgeModel extends  BasePledgeModel {
     private double power;
     private int releaseYear;
 
+    public CarPledgeDto() {
+    }
+
+    //getters and setters area
     public String getBrand() {
         return brand;
     }

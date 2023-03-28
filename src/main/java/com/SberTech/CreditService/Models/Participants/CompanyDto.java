@@ -1,34 +1,16 @@
 package com.SberTech.CreditService.Models.Participants;
 
-import com.SberTech.CreditService.Entities.Participants.Company;
-
 import java.util.Date;
 
-public class CompanyModel extends BaseParticipantModel {
-
-    public CompanyModel() {
-    }
-
-    public CompanyModel(Company entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.inn = entity.getInn();
-        this.isBorrower = entity.isBorrower();
-        this.isGuarantor = entity.isGuarantor();
-        this.isPledger = entity.isPledger();
-        this.companyName = entity.getCompanyName();
-        this.ogrn = entity.getOgrn();
-        this.registration_address = entity.getRegistration_address();
-        this.registrationDate = entity.getRegistrationDate();
-        this.residential_address = entity.getResidential_address();
-    }
-
+public class CompanyDto extends ParticipantDto {
     private String companyName;
     private long ogrn;
     private Date registrationDate;
     private String registration_address;
     private String residential_address;
 
+    public CompanyDto() {
+    }
     //getters and setters area
 
     public String getCompanyName() {
