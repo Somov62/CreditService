@@ -25,9 +25,9 @@ public class CreditDeal {
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CreditCondition> conditions;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<BasePledge> pledges;
     @ManyToMany
     @Cascade({

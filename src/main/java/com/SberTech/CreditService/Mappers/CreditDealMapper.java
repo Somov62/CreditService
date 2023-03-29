@@ -1,6 +1,5 @@
 package com.SberTech.CreditService.Mappers;
 
-import com.SberTech.CreditService.Entities.CreditCondition;
 import com.SberTech.CreditService.Entities.CreditDeal;
 import com.SberTech.CreditService.Mappers.Participants.ParticipantMapper;
 import com.SberTech.CreditService.Mappers.Pledges.PledgeMapper;
