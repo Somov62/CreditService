@@ -3,6 +3,7 @@ package com.SberTech.CreditService.Controllers;
 import com.SberTech.CreditService.Exceptions.NotFoundException;
 import com.SberTech.CreditService.Models.CreditDealDto;
 import com.SberTech.CreditService.Services.CreditDealService;
+import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class CreditDealController {
         try {
             var entity = service.edit(body);
             return ResponseEntity.ok(entity);
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | OptimisticLockException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

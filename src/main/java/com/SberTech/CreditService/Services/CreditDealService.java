@@ -9,10 +9,10 @@ import com.SberTech.CreditService.Models.CreditDealDto;
 import com.SberTech.CreditService.Repos.CreditDealRepo;
 import com.SberTech.CreditService.Repos.Participants.ParticipantRepo;
 import com.SberTech.CreditService.Repos.Pledges.BasePledgeRepo;
+import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,11 +47,15 @@ public class CreditDealService {
 
     }
 
-    public CreditDealDto edit(CreditDealDto model) throws NotFoundException {
+    public CreditDealDto edit(CreditDealDto model) throws NotFoundException, OptimisticLockException {
         var find = repo.findById(model.getId());
         if (find.isEmpty())
             throw new NotFoundException("Сделка не найдена");
         CreditDeal entity = find.get();
+
+        if (model.getVersion() != entity.getVersion())
+            throw new OptimisticLockException(
+                    "Полученные данные не актуальны, пожалуйста, вновь получите данные и сервера и обновите их");
 
         entity = creditDealMapper.updateEntity(entity, model);
 
