@@ -46,7 +46,6 @@ public class CarPledgeMapper implements IDtoMapper<CarPledge, CarPledgeDto> {
         entity.setBrand(dto.getBrand());
         entity.setModel(dto.getModel());
         entity.setPower(dto.getPower());
-        entity.setAmount(dto.getAmount());
         entity.setVin(dto.getVin());
         entity.setRegistrationNumber(dto.getRegistrationNumber());
         entity.setReleaseYear(dto.getReleaseYear());

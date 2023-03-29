@@ -18,7 +18,13 @@ public class Participant {
     private boolean isGuarantor;
     private boolean isPledger;
 
-    @ManyToMany(mappedBy = "participants")
+    @ManyToMany(
+            mappedBy = "participants",
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
     private List<CreditDeal> deals;
 
     public Participant() {

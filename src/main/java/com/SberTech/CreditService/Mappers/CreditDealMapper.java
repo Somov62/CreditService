@@ -1,5 +1,6 @@
 package com.SberTech.CreditService.Mappers;
 
+import com.SberTech.CreditService.Entities.CreditCondition;
 import com.SberTech.CreditService.Entities.CreditDeal;
 import com.SberTech.CreditService.Mappers.Participants.ParticipantMapper;
 import com.SberTech.CreditService.Mappers.Pledges.PledgeMapper;
@@ -16,6 +17,8 @@ public class CreditDealMapper implements IDtoMapper<CreditDeal, CreditDealDto> {
     private ParticipantMapper participantMapper;
     @Autowired
     private PledgeMapper pledgeMapper;
+    @Autowired
+    private CreditConditionMapper creditConditionMapper;
 
     @Override
     public CreditDealDto mapToDto(CreditDeal entity) {
@@ -26,13 +29,11 @@ public class CreditDealMapper implements IDtoMapper<CreditDeal, CreditDealDto> {
 
         dto.setId(entity.getId());
         dto.setCreationDate(entity.getCreationDate());
-        dto.setCreditCondition(entity.getCreditCondition());
-        dto.setAmount(entity.getAmount());
-        dto.setPeriod(entity.getPeriod());
-        dto.setInterestRate(entity.getInterestRate());
         dto.setVersion(entity.getVersion());
 
         //Приведение методом toList создаст иммутабельную коллекцию
+        //Связанный список условий сделки
+        dto.setCreditConditions(entity.getConditions().stream().map(creditConditionMapper::mapToDto).toList());
         //Связанный список участников сделки
         dto.setParticipants(entity.getParticipants().stream().map(participantMapper::mapToDto).toList());
         //Связанный список залогов
@@ -55,14 +56,15 @@ public class CreditDealMapper implements IDtoMapper<CreditDeal, CreditDealDto> {
         if (dto == null)
             throw new IllegalArgumentException("dto is null");
 
-        entity.setPeriod(dto.getPeriod());
-        entity.setAmount(dto.getAmount());
-        entity.setCreditCondition(dto.getCreditCondition());
         entity.setCreationDate(dto.getCreationDate());
-        entity.setInterestRate(dto.getInterestRate());
         entity.setVersion(dto.getVersion());
 
         //Используем приведение к ArrayList, который изменяем и подходит для hibernate
+
+        if (dto.getCreditConditions() != null)
+            entity.setConditions(
+                    dto.getCreditConditions().stream().map(creditConditionMapper::mapToEntity)
+                            .collect(Collectors.toList()));
         if (dto.getParticipants() != null)
             entity.setParticipants(
                     dto.getParticipants().stream().map(participantMapper::mapToEntity)

@@ -2,11 +2,11 @@ package com.SberTech.CreditService.Entities;
 
 import com.SberTech.CreditService.Entities.Participants.Participant;
 import com.SberTech.CreditService.Entities.Pledges.BasePledge;
-import com.SberTech.CreditService.Models.Enums.CreditConditionType;
+
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -25,21 +25,15 @@ public class CreditDeal {
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
-    @Column(name = "credit_condition")
-    @Enumerated(EnumType.ORDINAL)
-    private CreditConditionType creditCondition;
-
-    @Column(name = "amount")
-    private BigDecimal amount;
-
-    @Column(name = "period")
-    private int period; //in months
-
-    @Column(name = "interest_rate")
-    private double interestRate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal")
+    private List<CreditCondition> conditions;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal")
     private List<BasePledge> pledges;
     @ManyToMany
+    @Cascade({
+            org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.MERGE,
+            org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable (
             name = "deal_participant",
             joinColumns = @JoinColumn(name = "deal_id"),
@@ -88,35 +82,11 @@ public class CreditDeal {
         this.creationDate = creationDate;
     }
 
-    public CreditConditionType getCreditCondition() {
-        return creditCondition;
+    public List<CreditCondition> getConditions() {
+        return conditions;
     }
 
-    public void setCreditCondition(CreditConditionType creditCondition) {
-        this.creditCondition = creditCondition;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
-    }
-
-    public double getInterestRate() {
-        return interestRate;
-    }
-
-    public void setInterestRate(double interestRate) {
-        this.interestRate = interestRate;
+    public void setConditions(List<CreditCondition> conditions) {
+        this.conditions = conditions;
     }
 }
