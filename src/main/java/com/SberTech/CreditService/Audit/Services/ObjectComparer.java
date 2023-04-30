@@ -3,8 +3,6 @@ package com.SberTech.CreditService.Audit.Services;
 import com.SberTech.CreditService.Audit.Database.Enitities.CollectionItemChangeModel;
 import com.SberTech.CreditService.Audit.Database.Enitities.FieldChangeModel;
 import com.SberTech.CreditService.Audit.Database.Enitities.StateType;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,9 +16,7 @@ import java.util.*;
 @Service
 public class ObjectComparer {
 
-    public  List<FieldChangeModel> Compare(Optional<Object> firstState, Object secondState) {
-        //Первый объект может быть null, а вот второй нет.
-        // Такой случай используется, когда аудируемая сущность только создана и ни разу не модифицирована
+    public  List<FieldChangeModel> compare(Optional<Object> firstState, Object secondState) {
         if (secondState == null)
             throw new IllegalArgumentException("secondState shouldn't be null");
 
@@ -54,16 +50,16 @@ public class ObjectComparer {
                 //Пропускаем коллекции без аннотации JoinColumn, чтобы избежать циклических зависимостей
                 if (!field.isAnnotationPresent(JoinColumn.class))
                     continue;
-                //Измения в коллекции ищет метод compareCollections
+                //Изменения в коллекции ищет метод compareCollections
                 model.newValue = this.compareCollections(value1, value2);
             }
             //При
             if (field.isAnnotationPresent(OneToOne.class)) {
-                //Избавляемся от циклических зависимочтей в OneToOne связях
+                //Избавляемся от циклических зависимостей в OneToOne связях
                 var annotation =  field.getAnnotation(OneToOne.class);
                 if (annotation.mappedBy() == null)
                     continue;
-                model.newValue = this.Compare(Optional.ofNullable(value1), value2);
+                model.newValue = this.compare(Optional.ofNullable(value1), value2);
 
             }
 
@@ -71,7 +67,7 @@ public class ObjectComparer {
             if (!Collection.class.isAssignableFrom(field.getType()) && !field.isAnnotationPresent(OneToOne.class))
                 model.newValue = comparePrimitive(value1, value2);
 
-            //Если model.newValue = null, значит изменений не обнаружено, и старая версия поля соответсвует новой.
+            //Если model.newValue = null, значит изменений не обнаружено, и старая версия поля соответствует новой.
             if (model.newValue == null)
                 continue;
             //Заполняем имя и добавляем в коллекцию
@@ -104,10 +100,10 @@ public class ObjectComparer {
                 var pk1 = getPrimaryKey(collectionFirst.get(i));
 
                 for (int j = 0; j < collectionSecond.size(); j++) {
-                    //Если первичные ключи элементов в обоих коллекциях совпали, значит это одна и та же сущность
+                    //Если первичные ключи элементов в коллекциях совпали, значит это одна и та же сущность
                     if (Objects.equals(pk1, getPrimaryKey(collectionSecond.get(j)))) {
-                        //Ищем изменения между этими двуми жлементами
-                        var changes = this.Compare(Optional.of(collectionFirst.get(i)), collectionSecond.get(j));
+                        //Ищем изменения между этими двумя элементами
+                        var changes = this.compare(Optional.of(collectionFirst.get(i)), collectionSecond.get(j));
                         //Если изменения найдены, то фиксируем их
                         if (changes != null) {
                             var model = new CollectionItemChangeModel();
@@ -116,7 +112,7 @@ public class ObjectComparer {
                             model.setChanges(changes);
                             collectionChanges.add(model);
                         }
-                        //Удаляем пару из колекций
+                        //Удаляем пару из коллекций
                         collectionFirst.remove(i);
                         collectionSecond.remove(j);
                         i--;
@@ -145,7 +141,7 @@ public class ObjectComparer {
         if (collectionSecond != null) {
             for (int i = 0; i < collectionSecond.size(); i++) {
                 var pk = getPrimaryKey(collectionSecond.get(i));
-                var changes = this.Compare(Optional.empty(), collectionSecond.get(i));
+                var changes = this.compare(Optional.empty(), collectionSecond.get(i));
                 var model = new CollectionItemChangeModel();
                 model.setId(pk);
                 model.setState(StateType.CREATED);
@@ -159,7 +155,17 @@ public class ObjectComparer {
     }
 
     private String getPrimaryKey(Object entity) {
-        final Field[] fields = entity.getClass().getDeclaredFields();
+        Field[] fields = entity.getClass().getDeclaredFields();
+        for (final Field field : fields) {
+            if (field.isAnnotationPresent(Id.class)) {
+                try {
+                    field.setAccessible(true);
+                    return field.get(entity).toString();
+                } catch (IllegalAccessException ignored) {
+                }
+            }
+        }
+        fields = entity.getClass().getSuperclass().getDeclaredFields();
         for (final Field field : fields) {
             if (field.isAnnotationPresent(Id.class)) {
                 try {

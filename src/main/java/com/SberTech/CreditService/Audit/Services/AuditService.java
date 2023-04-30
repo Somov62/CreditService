@@ -32,11 +32,11 @@ public class AuditService {
         //Если сущность не найдена, значит ее добавили, а если найдена, то изменили
         var records = repo.findByNameAndPrimaryKey(name, primaryKey);
         if (records.isEmpty()) {
-            auditAdd(newEntity);
+            this.auditAdd(newEntity);
             return;
         }
         AuditEntity record = records.get(0);
-        auditEdit(newEntity, record);
+        this.auditEdit(newEntity, record);
     }
 
 
@@ -48,13 +48,12 @@ public class AuditService {
         entity.setPrimaryKey(this.getPrimaryKey(newEntity));  // Заполняем первичный ключ
         entity.setMode(StateType.CREATED);
         entity.setFullVersion(this.serialize(newEntity));
+        entity.setVersions(new ArrayList<>());
 
         Version version = new Version();
-        version.setVersion(1);
-        //Сравниваем новый объект с null, чтобы зафиксировать всю сущность сразу
-        List<FieldChangeModel> changeList = comparer.Compare(Optional.empty(), newEntity);
-        version.setChanges(serialize(changeList));
-        entity.setVersions(new ArrayList<>());
+        version.setVersion(entity.getVersions().size());
+        version.setChanges(serialize(newEntity)); //Изменения в первой версии будут всем объектом
+
         entity.getVersions().add(version);
         repo.save(entity);
     }
@@ -65,14 +64,14 @@ public class AuditService {
         record.setMode(StateType.MODIFIED);
         //Создаем новую версию
         Version version = new Version();
-        version.setVersion(record.getVersions().size() + 1);
+        version.setVersion(record.getVersions().size());
         //Получаем старую версию сущности из json
         Object oldEntity = this.deserialize(record.getFullVersion(), newEntity.getClass());
         //Сохраняем новую версию в json
         record.setFullVersion(this.serialize(newEntity));
         //Сравниваем новый объект со старым
-        List<FieldChangeModel> changeList = comparer.Compare(Optional.ofNullable(oldEntity), newEntity);
-        version.setChanges(serialize(changeList)); //Сохраняем измения в json формате
+        List<FieldChangeModel> changeList = comparer.compare(Optional.ofNullable(oldEntity), newEntity);
+        version.setChanges(serialize(changeList)); //Сохраняем изменения в json формате
         record.getVersions().add(version);
         repo.save(record);
     }
@@ -91,7 +90,7 @@ public class AuditService {
         record.setMode(StateType.DELETED);
 
         Version version = new Version();
-        version.setVersion(record.getVersions().size() + 1);
+        version.setVersion(record.getVersions().size());
         version.setChanges("entity deleted");
         record.getVersions().add(version);
         repo.save(record);
@@ -122,10 +121,10 @@ public class AuditService {
         }
     }
 
-    private Object deserialize(String json, Class targetType) {
+    private Object deserialize(String json, Class<?> targetType) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.readValue(json, targetType.getClass());
+            return mapper.readValue(json, targetType);
         } catch (JsonProcessingException e) {
             return null;
         }
