@@ -1,8 +1,8 @@
 package com.SberTech.CreditService.Mappers.Pledges;
 
-import com.SberTech.CreditService.Entities.Pledges.BasePledge;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Pledges.BasePledge;
 import com.SberTech.CreditService.Mappers.IDtoMapper;
-import com.SberTech.CreditService.Models.Pledges.BasePledgeDto;
+import com.SberTech.CreditService.Dto.Pledges.BasePledgeDto;
 import org.springframework.stereotype.Service;
 
 @Service

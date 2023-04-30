@@ -1,14 +1,14 @@
 package com.SberTech.CreditService.Mappers.Participants;
 
-import com.SberTech.CreditService.Entities.Participants.Company;
-import com.SberTech.CreditService.Entities.Participants.IndividualBusinessman;
-import com.SberTech.CreditService.Entities.Participants.NaturalPerson;
-import com.SberTech.CreditService.Entities.Participants.Participant;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Participants.Company;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Participants.IndividualBusinessman;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Participants.NaturalPerson;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Participants.Participant;
 import com.SberTech.CreditService.Mappers.IDtoMapper;
-import com.SberTech.CreditService.Models.Participants.CompanyDto;
-import com.SberTech.CreditService.Models.Participants.IndividualBusinessmanDto;
-import com.SberTech.CreditService.Models.Participants.NaturalPersonDto;
-import com.SberTech.CreditService.Models.Participants.ParticipantDto;
+import com.SberTech.CreditService.Dto.Participants.CompanyDto;
+import com.SberTech.CreditService.Dto.Participants.IndividualBusinessmanDto;
+import com.SberTech.CreditService.Dto.Participants.NaturalPersonDto;
+import com.SberTech.CreditService.Dto.Participants.ParticipantDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

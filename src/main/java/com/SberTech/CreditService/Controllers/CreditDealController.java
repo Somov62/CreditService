@@ -1,7 +1,7 @@
 package com.SberTech.CreditService.Controllers;
 
 import com.SberTech.CreditService.Exceptions.NotFoundException;
-import com.SberTech.CreditService.Models.CreditDealDto;
+import com.SberTech.CreditService.Dto.CreditDealDto;
 import com.SberTech.CreditService.Services.CreditDealService;
 import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.SberTech.CreditService.Mappers.Participants;
 
-import com.SberTech.CreditService.Entities.Participants.Participant;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Participants.Participant;
 import com.SberTech.CreditService.Mappers.IDtoMapper;
-import com.SberTech.CreditService.Models.Participants.ParticipantDto;
+import com.SberTech.CreditService.Dto.Participants.ParticipantDto;
 import org.springframework.stereotype.Service;
 
 @Service

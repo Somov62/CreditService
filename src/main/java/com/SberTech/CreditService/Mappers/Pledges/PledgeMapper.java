@@ -1,14 +1,14 @@
 package com.SberTech.CreditService.Mappers.Pledges;
 
-import com.SberTech.CreditService.Entities.Pledges.BasePledge;
-import com.SberTech.CreditService.Entities.Pledges.CarPledge;
-import com.SberTech.CreditService.Entities.Pledges.FlatPledge;
-import com.SberTech.CreditService.Entities.Pledges.LandPledge;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Pledges.BasePledge;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Pledges.CarPledge;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Pledges.FlatPledge;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Pledges.LandPledge;
 import com.SberTech.CreditService.Mappers.IDtoMapper;
-import com.SberTech.CreditService.Models.Pledges.BasePledgeDto;
-import com.SberTech.CreditService.Models.Pledges.CarPledgeDto;
-import com.SberTech.CreditService.Models.Pledges.FlatPledgeDto;
-import com.SberTech.CreditService.Models.Pledges.LandPledgeDto;
+import com.SberTech.CreditService.Dto.Pledges.BasePledgeDto;
+import com.SberTech.CreditService.Dto.Pledges.CarPledgeDto;
+import com.SberTech.CreditService.Dto.Pledges.FlatPledgeDto;
+import com.SberTech.CreditService.Dto.Pledges.LandPledgeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

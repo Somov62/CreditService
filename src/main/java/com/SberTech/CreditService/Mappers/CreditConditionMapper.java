@@ -1,7 +1,7 @@
 package com.SberTech.CreditService.Mappers;
 
-import com.SberTech.CreditService.Entities.CreditCondition;
-import com.SberTech.CreditService.Models.CreditConditionDto;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.CreditCondition;
+import com.SberTech.CreditService.Dto.CreditConditionDto;
 import org.springframework.stereotype.Service;
 
 @Service

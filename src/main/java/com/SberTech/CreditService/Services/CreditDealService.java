@@ -1,14 +1,16 @@
 package com.SberTech.CreditService.Services;
 
-import com.SberTech.CreditService.Entities.CreditDeal;
-import com.SberTech.CreditService.Entities.Participants.Participant;
-import com.SberTech.CreditService.Entities.Pledges.BasePledge;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.CreditDeal;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Participants.Participant;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.Pledges.BasePledge;
 import com.SberTech.CreditService.Exceptions.NotFoundException;
 import com.SberTech.CreditService.Mappers.CreditDealMapper;
-import com.SberTech.CreditService.Models.CreditDealDto;
-import com.SberTech.CreditService.Repos.CreditDealRepo;
-import com.SberTech.CreditService.Repos.Participants.ParticipantRepo;
-import com.SberTech.CreditService.Repos.Pledges.BasePledgeRepo;
+import com.SberTech.CreditService.Dto.CreditDealDto;
+import com.SberTech.CreditService.CreditDealDatabase.Repos.CreditDealRepo;
+import com.SberTech.CreditService.CreditDealDatabase.Repos.Participants.ParticipantRepo;
+import com.SberTech.CreditService.CreditDealDatabase.Repos.Pledges.BasePledgeRepo;
+import com.SberTech.CreditService.Audit.Database.AuditRepo;
+import com.SberTech.CreditService.Audit.Database.Enitities.AuditEntity;
 import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,6 @@ public class CreditDealService {
     private BasePledgeRepo<BasePledge> pledgeRepo;
     @Autowired
     private CreditDealMapper creditDealMapper;
-
     public List<CreditDealDto> getAll() {
 
         return repo.findAll().stream().map(creditDealMapper::mapToDto).toList();

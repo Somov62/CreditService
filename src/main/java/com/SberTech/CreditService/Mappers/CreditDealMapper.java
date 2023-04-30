@@ -1,9 +1,9 @@
 package com.SberTech.CreditService.Mappers;
 
-import com.SberTech.CreditService.Entities.CreditDeal;
+import com.SberTech.CreditService.CreditDealDatabase.Entities.CreditDeal;
 import com.SberTech.CreditService.Mappers.Participants.ParticipantMapper;
 import com.SberTech.CreditService.Mappers.Pledges.PledgeMapper;
-import com.SberTech.CreditService.Models.CreditDealDto;
+import com.SberTech.CreditService.Dto.CreditDealDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
